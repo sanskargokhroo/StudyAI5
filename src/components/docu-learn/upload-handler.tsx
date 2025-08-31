@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LoaderCircle, UploadCloud } from "lucide-react";
+import { UploadCloud } from "lucide-react";
 import { Progress } from '@/components/ui/progress';
 
 
@@ -28,7 +28,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
           }
           return prev + 5;
         });
-      }, 500);
+      }, 1000);
     } else {
       setProgress(100);
     }
