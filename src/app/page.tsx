@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ActivityDashboard } from '@/components/docu-learn/activity-dashboard';
 import { UploadHandler } from '@/components/docu-learn/upload-handler';
-import { BookOpen } from 'lucide-react';
+import { BrainCircuit } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 
@@ -34,7 +34,7 @@ export default function Home() {
         <header className="text-center mb-10">
           <div className="inline-flex items-center gap-3 mb-2">
             <div className="p-2 bg-primary/20 rounded-lg">
-                <BookOpen className="w-8 h-8 text-primary-foreground" />
+                <BrainCircuit className="w-8 h-8 text-primary" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight text-foreground">
               StudyAI
