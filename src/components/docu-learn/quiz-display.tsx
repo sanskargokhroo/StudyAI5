@@ -84,14 +84,14 @@ export function QuizDisplay({ quiz, onRestart }: QuizDisplayProps) {
               <AccordionItem value={`item-${index}`} key={index}>
                 <AccordionTrigger>
                     <div className="flex items-center gap-3">
-                        {isCorrect ? <CheckCircle className="w-5 h-5 text-green-500" /> : <XCircle className="w-5 h-5 text-red-500" />}
+                        {isCorrect ? <CheckCircle className="w-5 h-5 text-green-600" /> : <XCircle className="w-5 h-5 text-red-600" />}
                         <span className="text-left flex-1">{q.question}</span>
                     </div>
                 </AccordionTrigger>
                 <AccordionContent>
                     <div className='p-2 space-y-4'>
-                        <p><strong>Your Answer: </strong><span className={cn(isCorrect ? 'text-green-500' : 'text-red-500')}>{userAnswer}</span></p>
-                        {!isCorrect && <p><strong>Correct Answer: </strong><span className='text-green-500'>{q.answer}</span></p>}
+                        <p><strong>Your Answer: </strong><span className={cn(isCorrect ? 'text-green-600' : 'text-red-600')}>{userAnswer}</span></p>
+                        {!isCorrect && <p><strong>Correct Answer: </strong><span className='text-green-600'>{q.answer}</span></p>}
                         
                         {!isCorrect && (
                              <div>
@@ -161,15 +161,15 @@ export function QuizDisplay({ quiz, onRestart }: QuizDisplayProps) {
                   size="lg"
                   className={cn(
                     'justify-start h-auto py-3 text-left whitespace-normal',
-                    showResult && isCorrect && 'border-green-500 bg-green-500/20 hover:bg-green-500/30 text-green-500 dark:text-green-400',
-                    showResult && isSelected && !isCorrect && 'border-red-500 bg-red-500/20 hover:bg-red-500/30 text-red-500 dark:text-red-400',
+                    showResult && isCorrect && 'border-green-600 bg-green-600/30 hover:bg-green-600/40 text-green-600 dark:text-green-500',
+                    showResult && isSelected && !isCorrect && 'border-red-600 bg-red-600/30 hover:bg-red-600/40 text-red-600 dark:text-red-500',
                   )}
                   onClick={() => handleSelectAnswer(option)}
                   disabled={!!selectedAnswer}
                 >
                   <div className="flex-grow">{option}</div>
-                  {showResult && isCorrect && <CheckCircle className="w-5 h-5 text-green-500 ml-4 shrink-0" />}
-                  {showResult && isSelected && !isCorrect && <XCircle className="w-5 h-5 text-red-500 ml-4 shrink-0" />}
+                  {showResult && isCorrect && <CheckCircle className="w-5 h-5 text-green-600 ml-4 shrink-0" />}
+                  {showResult && isSelected && !isCorrect && <XCircle className="w-5 h-5 text-red-600 ml-4 shrink-0" />}
                 </Button>
               );
             })}
