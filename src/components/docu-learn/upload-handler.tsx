@@ -28,7 +28,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
           progressValue = 95;
         }
         setProgress(progressValue);
-      }, 500);
+      }, 1500);
     } else {
       setProgress(0);
     }
