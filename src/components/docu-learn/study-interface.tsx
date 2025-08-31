@@ -12,7 +12,7 @@ import { FlashcardDisplay } from './flashcard-display';
 import { QuizDisplay } from './quiz-display';
 import { NotesDisplay } from './notes-display';
 import { Button } from '../ui/button';
-import { RotateCcw, ArrowLeft } from 'lucide-react';
+import { RotateCcw, ArrowLeft, BrainCircuit } from 'lucide-react';
 import { ActivityDashboard } from './activity-dashboard';
 import { LoaderCircle } from 'lucide-react';
 
@@ -121,7 +121,7 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
   return (
     <div className="min-h-screen flex flex-col">
        <header className="p-4 flex justify-between items-center border-b">
-           <div>
+           <div className="w-1/3">
             {activeActivity !== 'home' && (
                 <Button variant="outline" onClick={() => setActiveActivity('home')} className="shrink-0">
                     <ArrowLeft className="mr-2 h-4 w-4" />
@@ -129,7 +129,15 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
                 </Button>
             )}
            </div>
-           <div className="flex gap-2 items-center">
+            <div className="w-1/3 flex justify-center">
+                <div className="inline-flex items-center gap-2">
+                    <BrainCircuit className="w-6 h-6 text-primary" />
+                    <h1 className="text-xl font-bold font-headline tracking-tight text-foreground">
+                        StudyAI
+                    </h1>
+                </div>
+            </div>
+           <div className="w-1/3 flex justify-end">
             <Button variant="outline" onClick={onReset} className="shrink-0">
                 <RotateCcw className="mr-2 h-4 w-4" />
                 Upload New
