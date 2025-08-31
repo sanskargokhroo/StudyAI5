@@ -90,7 +90,7 @@ export function ActivityDashboard({ documentText, onReset }: ActivityDashboardPr
           <CardHeader>
             <div className="flex items-center gap-3">
               <FileText className="w-6 h-6 text-accent" />
-              <CardTitle>Automated Notes</CardTitle>
+              <CardTitle>Create Notes</CardTitle>
             </div>
             <CardDescription>A concise summary of the key points.</CardDescription>
           </CardHeader>
