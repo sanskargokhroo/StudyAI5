@@ -14,7 +14,10 @@ async function getTextFromDocx(buffer: Buffer): Promise<string> {
 }
 
 async function getTextFromPdf(buffer: Buffer): Promise<string> {
-    const data = await pdf(buffer);
+    // pdf-parse has a bug where it tries to open a test file if options are not provided.
+    const data = await pdf(buffer, {
+      pagerender: () => '',
+    });
     return data.text;
 }
 
@@ -46,14 +49,15 @@ export async function handleFileRead(formData: FormData): Promise<string> {
 
 function parseQuizString(quizString: string): Quiz {
   try {
-    const cleanString = quizString.replace(/```json\n?|\n?```/g, '');
+    const cleanString = quizString.replace(/```json\n?|(\r\n|\n|\r)/gm, '').replace(/```/g, '');
     const parsed = JSON.parse(cleanString);
     if (parsed.quiz && parsed.quiz.questions) {
        return parsed.quiz;
     }
     if (parsed.questions) {
-      return parsed;
+      return { questions: parsed.questions };
     }
+     return { questions: parsed };
   } catch (e) {
     console.warn('Failed to parse quiz as JSON, attempting text parsing.', e);
     const questions = [];
@@ -85,7 +89,6 @@ function parseQuizString(quizString: string): Quiz {
     }
     return { questions };
   }
-  throw new Error("Parsed JSON for quiz is not in the expected format.");
 }
 
 
