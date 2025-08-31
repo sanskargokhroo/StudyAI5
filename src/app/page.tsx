@@ -28,7 +28,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8">
       <main className="w-full max-w-5xl mx-auto">
         <header className="text-center mb-10">
-          <div className="inline-flex items-center gap-3 mb-4">
+          <div className="inline-flex items-center gap-3 mb-2">
             <div className="p-2 bg-primary/20 rounded-lg">
                 <BookOpen className="w-8 h-8 text-primary-foreground" />
             </div>
@@ -36,8 +36,8 @@ export default function Home() {
               StudyAI
             </h1>
           </div>
-          <p className="text-sm italic text-accent-foreground/80">Your Personal AI Learning Assistant</p>
-          <p className="text-md text-muted-foreground mt-2">by Sanskar Gokhroo</p>
+          <p className="text-md text-muted-foreground -mt-1">by Sanskar Gokhroo</p>
+          <p className="text-sm italic text-accent-foreground/80 mt-4">Your Personal AI Learning Assistant</p>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
             Upload your documents and unlock a world of interactive learning. Generate quizzes, flashcards, notes, and more with the power of AI.
           </p>
