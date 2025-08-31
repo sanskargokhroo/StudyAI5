@@ -5,7 +5,6 @@ import { generateNotesFromDocument } from '@/ai/flows/generate-notes-from-docume
 import { generateQuiz } from '@/ai/flows/generate-quiz-from-document';
 import { Quiz } from '@/lib/types';
 import mammoth from 'mammoth';
-import pdf from 'pdf-parse';
 
 
 async function getTextFromDocx(buffer: Buffer): Promise<string> {
@@ -14,6 +13,7 @@ async function getTextFromDocx(buffer: Buffer): Promise<string> {
 }
 
 async function getTextFromPdf(buffer: Buffer): Promise<string> {
+    const pdf = (await import('pdf-parse')).default;
     // pdf-parse has a bug where it tries to open a test file if options are not provided.
     const data = await pdf(buffer, {
       pagerender: () => '',
