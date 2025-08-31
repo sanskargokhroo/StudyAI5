@@ -11,14 +11,31 @@ const sampleDocumentText = `The Solar System is the gravitationally bound system
 
 export default function Home() {
   const [documentText, setDocumentText] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFileUpload = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const text = e.target?.result as string;
-      setDocumentText(text);
-    };
-    reader.readAsText(file);
+    setIsLoading(true);
+    // For now, we'll use FileReader. In a real app, you'd upload to a server
+    // and use a library like pdf-parse or mammoth to extract text.
+    if (file.type === 'text/plain') {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result as string;
+        setDocumentText(text);
+        setIsLoading(false);
+      };
+      reader.onerror = () => {
+        console.error("Failed to read file");
+        setIsLoading(false);
+      }
+      reader.readAsText(file);
+    } else {
+      // For demo, if it's not a text file, use sample text.
+      // A real implementation would require server-side parsing for PDF/DOC.
+      console.warn(`File type ${file.type} not directly readable in browser. Using sample text.`);
+      setDocumentText(sampleDocumentText);
+      setIsLoading(false);
+    }
   };
 
   const handleReset = () => {
@@ -46,7 +63,7 @@ export default function Home() {
         {documentText ? (
           <ActivityDashboard documentText={documentText} onReset={handleReset} />
         ) : (
-          <UploadHandler onFileUpload={handleFileUpload} />
+          <UploadHandler onFileUpload={handleFileUpload} isLoading={isLoading} />
         )}
 
         <footer className="text-center mt-12 text-sm text-muted-foreground">
