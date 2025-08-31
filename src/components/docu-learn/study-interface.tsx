@@ -13,7 +13,6 @@ import { QuizDisplay } from './quiz-display';
 import { NotesDisplay } from './notes-display';
 import { Button } from '../ui/button';
 import { RotateCcw, ArrowLeft } from 'lucide-react';
-import { ThemeToggle } from '../theme-toggle';
 import { ActivityDashboard } from './activity-dashboard';
 import { LoaderCircle } from 'lucide-react';
 
@@ -118,7 +117,6 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
                 <RotateCcw className="mr-2 h-4 w-4" />
                 Upload New
             </Button>
-            <ThemeToggle />
            </div>
         </header>
         <main className="flex-1 overflow-auto">
