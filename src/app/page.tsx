@@ -11,15 +11,14 @@ const sampleDocumentText = `The Solar System is the gravitationally bound system
 
 export default function Home() {
   const [documentText, setDocumentText] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileUpload = () => {
-    setIsLoading(true);
-    // Simulate OCR and processing
-    setTimeout(() => {
-      setDocumentText(sampleDocumentText);
-      setIsLoading(false);
-    }, 2000);
+  const handleFileUpload = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target?.result as string;
+      setDocumentText(text);
+    };
+    reader.readAsText(file);
   };
 
   const handleReset = () => {
@@ -47,7 +46,7 @@ export default function Home() {
         {documentText ? (
           <ActivityDashboard documentText={documentText} onReset={handleReset} />
         ) : (
-          <UploadHandler onFileUpload={handleFileUpload} isLoading={isLoading} />
+          <UploadHandler onFileUpload={handleFileUpload} />
         )}
 
         <footer className="text-center mt-12 text-sm text-muted-foreground">

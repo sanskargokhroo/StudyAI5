@@ -33,7 +33,6 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
                 "Upload Document"
               )}
             </Button>
-            <p className="text-xs text-muted-foreground mt-4">For demo purposes, this will load a sample document.</p>
           </div>
         </CardContent>
       </Card>
