@@ -24,6 +24,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    // Exclude mammoth from client-side bundle
+    if (!isServer) {
+      config.resolve.alias.mammoth = false;
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

@@ -4,6 +4,45 @@ import { createFlashcardsFromDocument } from '@/ai/flows/create-flashcards-from-
 import { generateNotesFromDocument } from '@/ai/flows/generate-notes-from-document';
 import { generateQuiz } from '@/ai/flows/generate-quiz-from-document';
 import { Quiz } from '@/lib/types';
+import mammoth from 'mammoth';
+import pdf from 'pdf-parse';
+
+
+async function getTextFromDocx(buffer: Buffer): Promise<string> {
+    const result = await mammoth.extractRawText({ buffer });
+    return result.value;
+}
+
+async function getTextFromPdf(buffer: Buffer): Promise<string> {
+    const data = await pdf(buffer);
+    return data.text;
+}
+
+
+export async function handleFileRead(formData: FormData): Promise<string> {
+    const file = formData.get('file') as File;
+
+    if (!file) {
+        throw new Error('No file uploaded.');
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (file.type === 'application/pdf') {
+        return getTextFromPdf(buffer);
+    }
+
+    if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+        return getTextFromDocx(buffer);
+    }
+
+    if (file.type === 'text/plain') {
+        return buffer.toString('utf-8');
+    }
+    
+    throw new Error(`Unsupported file type: ${file.type}`);
+}
+
 
 function parseQuizString(quizString: string): Quiz {
   try {
