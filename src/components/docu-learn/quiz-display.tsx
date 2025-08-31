@@ -90,8 +90,8 @@ export function QuizDisplay({ quiz, onRestart }: QuizDisplayProps) {
                 </AccordionTrigger>
                 <AccordionContent>
                     <div className='p-2 space-y-4'>
-                        <p><strong>Your Answer: </strong><span className={cn(isCorrect ? 'text-green-400' : 'text-red-400')}>{userAnswer}</span></p>
-                        {!isCorrect && <p><strong>Correct Answer: </strong><span className='text-green-400'>{q.answer}</span></p>}
+                        <p><strong>Your Answer: </strong><span className={cn(isCorrect ? 'text-green-500' : 'text-red-500')}>{userAnswer}</span></p>
+                        {!isCorrect && <p><strong>Correct Answer: </strong><span className='text-green-500'>{q.answer}</span></p>}
                         
                         {!isCorrect && (
                              <div>
@@ -161,8 +161,8 @@ export function QuizDisplay({ quiz, onRestart }: QuizDisplayProps) {
                   size="lg"
                   className={cn(
                     'justify-start h-auto py-3 text-left whitespace-normal',
-                    showResult && isCorrect && 'border-green-600 bg-green-900/30 hover:bg-green-900/40 text-green-400',
-                    showResult && isSelected && !isCorrect && 'border-red-600 bg-red-900/30 hover:bg-red-900/40 text-red-400',
+                    showResult && isCorrect && 'border-green-500 bg-green-500/20 hover:bg-green-500/30 text-green-500 dark:text-green-400',
+                    showResult && isSelected && !isCorrect && 'border-red-500 bg-red-500/20 hover:bg-red-500/30 text-red-500 dark:text-red-400',
                   )}
                   onClick={() => handleSelectAnswer(option)}
                   disabled={!!selectedAnswer}
