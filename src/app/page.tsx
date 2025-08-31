@@ -63,7 +63,7 @@ export default function Home() {
               StudyAI
             </h1>
           </div>
-          <p className="text-sm text-muted-foreground pl-16">by Sanskar Gokhroo</p>
+          <p className="text-sm text-muted-foreground pl-16">by Akshiii Jain</p>
         </header>
 
         <UploadHandler onFileUpload={handleFileUpload} isLoading={isLoading} />
