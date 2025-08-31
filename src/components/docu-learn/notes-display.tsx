@@ -1,4 +1,5 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 interface NotesDisplayProps {
   notes: string;
@@ -11,8 +12,17 @@ export function NotesDisplay({ notes }: NotesDisplayProps) {
     .replace(/\n/g, '<br />');
 
   return (
-    <ScrollArea className="h-48 w-full rounded-md border p-4 animate-in fade-in duration-500 bg-background">
-      <div className="text-sm" dangerouslySetInnerHTML={{ __html: formattedNotes }} />
-    </ScrollArea>
+    <div className="p-4 sm:p-6 md:p-8 h-full">
+        <Card className="h-full flex flex-col">
+            <CardHeader>
+                <CardTitle>Generated Notes</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-grow">
+                <ScrollArea className="h-[calc(100vh-200px)] w-full rounded-md border p-4 bg-background">
+                    <div className="text-sm" dangerouslySetInnerHTML={{ __html: formattedNotes }} />
+                </ScrollArea>
+            </CardContent>
+        </Card>
+    </div>
   );
 }

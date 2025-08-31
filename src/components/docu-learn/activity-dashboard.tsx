@@ -1,90 +1,50 @@
 'use client';
 
-import { useState } from 'react';
-import {
-  handleCreateFlashcards,
-  handleGenerateNotes,
-  handleGenerateQuiz,
-} from '@/app/actions';
-import { Flashcard, Quiz } from '@/lib/types';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import {
   Layers,
   FileText,
   HelpCircle,
   LoaderCircle,
-  RotateCcw,
+  Home,
 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { FlashcardDisplay } from './flashcard-display';
-import { QuizDisplay } from './quiz-display';
-import { NotesDisplay } from './notes-display';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface ActivityDashboardProps {
-  documentText: string;
-  onReset: () => void;
+  onGenerate: (activity: 'notes' | 'flashcards' | 'quiz') => void;
+  isAnyActivityLoading: boolean;
+  hasGeneratedContent: {
+    notes: boolean;
+    flashcards: boolean;
+    quiz: boolean;
+  };
+  setActiveActivity: (activity: 'notes' | 'flashcards' | 'quiz' | 'home') => void;
 }
 
-type Activity = 'quiz' | 'flashcards' | 'notes';
+export function ActivityDashboard({
+  onGenerate,
+  isAnyActivityLoading,
+  hasGeneratedContent,
+  setActiveActivity,
+}: ActivityDashboardProps) {
 
-export function ActivityDashboard({ documentText, onReset }: ActivityDashboardProps) {
-  const [loadingActivity, setLoadingActivity] = useState<Activity | null>(null);
-  const [quiz, setQuiz] = useState<Quiz | null>(null);
-  const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
-  const [notes, setNotes] = useState<string>('');
-  const { toast } = useToast();
-
-  const onGenerate = async (activity: Activity) => {
-    setLoadingActivity(activity);
-    try {
-      if (activity === 'quiz') {
-        const result = await handleGenerateQuiz(documentText);
-        setQuiz(result);
-      } else if (activity === 'flashcards') {
-        const result = await handleCreateFlashcards(documentText);
-        setFlashcards(result.flashcards);
-      } else if (activity === 'notes') {
-        const result = await handleGenerateNotes(documentText);
-        setNotes(result.notes);
-      }
-    } catch (error) {
-      console.error(`Error generating ${activity}:`, error);
-      toast({
-        variant: 'destructive',
-        title: 'An error occurred',
-        description: (error as Error).message || `Failed to generate ${activity}.`,
-      });
-    } finally {
-      setLoadingActivity(null);
-    }
+  const handleGenerateClick = (activity: 'notes' | 'flashcards' | 'quiz') => {
+    onGenerate(activity);
+    setActiveActivity(activity);
   };
 
-  const isAnyActivityLoading = loadingActivity !== null;
+  const handleViewClick = (activity: 'notes' | 'flashcards' | 'quiz') => {
+    setActiveActivity(activity);
+  };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex justify-end gap-2 items-center">
-          <Button variant="outline" onClick={onReset} className="shrink-0">
-            <RotateCcw className="mr-2 h-4 w-4" />
-            Upload New Document
-          </Button>
-      </div>
-
-      <div className="text-center">
-        <h2 className="text-2xl font-bold font-headline">Choose Your Study Tool</h2>
-        <p className="text-muted-foreground">Select an activity to generate from your document.</p>
-      </div>
-
+    <div className="p-4 sm:p-6 md:p-8">
+       <header className="text-center mb-10">
+          <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight text-foreground">
+            Study Tools
+          </h1>
+          <p className="text-muted-foreground mt-2">Select an activity to generate from your document.</p>
+        </header>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="flex flex-col shadow-lg">
           <CardHeader>
@@ -95,18 +55,13 @@ export function ActivityDashboard({ documentText, onReset }: ActivityDashboardPr
             <CardDescription>A concise summary of the key points.</CardDescription>
           </CardHeader>
           <CardContent className="flex-grow">
-            {loadingActivity === 'notes' && <div className="flex justify-center items-center h-24"><LoaderCircle className="w-8 h-8 animate-spin text-primary"/></div>}
-            {notes && loadingActivity !== 'notes' && <NotesDisplay notes={notes} />}
+            <p className="text-sm text-muted-foreground">Generate comprehensive notes to review the core concepts of your document.</p>
           </CardContent>
           <CardFooter>
-             {!notes && <Button className="w-full" onClick={() => onGenerate('notes')} disabled={isAnyActivityLoading}>
-                {loadingActivity === 'notes' ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Generate Notes
-            </Button>}
-             {notes && <Button className="w-full" onClick={() => onGenerate('notes')} disabled={isAnyActivityLoading}>
-                {loadingActivity === 'notes' ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Regenerate Notes
-            </Button>}
+             <Button className="w-full" onClick={() => hasGeneratedContent.notes ? handleViewClick('notes') : handleGenerateClick('notes')} disabled={isAnyActivityLoading}>
+                {isAnyActivityLoading && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
+                {hasGeneratedContent.notes ? 'View Notes' : 'Generate Notes'}
+            </Button>
           </CardFooter>
         </Card>
 
@@ -118,24 +73,14 @@ export function ActivityDashboard({ documentText, onReset }: ActivityDashboardPr
             </div>
             <CardDescription>Interactive flashcards for active recall.</CardDescription>
           </CardHeader>
-          <CardContent className="flex-grow"></CardContent>
+           <CardContent className="flex-grow">
+            <p className="text-sm text-muted-foreground">Create a set of flashcards to test your memory on key terms and definitions.</p>
+          </CardContent>
           <CardFooter>
-            <Dialog onOpenChange={(open) => !open && loadingActivity === 'flashcards' && setLoadingActivity(null)}>
-              <DialogTrigger asChild>
-                <Button className="w-full" onClick={() => { if (flashcards.length === 0) onGenerate('flashcards'); }} disabled={isAnyActivityLoading && loadingActivity !== 'flashcards'}>
-                  {loadingActivity === 'flashcards' ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  {flashcards.length > 0 ? 'View Flashcards' : 'Create Flashcards'}
-                </Button>
-              </DialogTrigger>
-              {flashcards.length > 0 && !isAnyActivityLoading && (
-                <DialogContent className="max-w-2xl w-full h-[80vh] flex flex-col p-6">
-                  <DialogHeader>
-                    <DialogTitle>Flashcards</DialogTitle>
-                  </DialogHeader>
-                  <FlashcardDisplay flashcards={flashcards} />
-                </DialogContent>
-              )}
-            </Dialog>
+            <Button className="w-full" onClick={() => hasGeneratedContent.flashcards ? handleViewClick('flashcards') : handleGenerateClick('flashcards')} disabled={isAnyActivityLoading}>
+              {isAnyActivityLoading && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
+              {hasGeneratedContent.flashcards ? 'View Flashcards' : 'Create Flashcards'}
+            </Button>
           </CardFooter>
         </Card>
 
@@ -147,24 +92,14 @@ export function ActivityDashboard({ documentText, onReset }: ActivityDashboardPr
             </div>
             <CardDescription>Test your knowledge with a custom quiz.</CardDescription>
           </CardHeader>
-          <CardContent className="flex-grow"></CardContent>
+          <CardContent className="flex-grow">
+            <p className="text-sm text-muted-foreground">Generate a multiple-choice quiz to challenge your understanding of the material.</p>
+          </CardContent>
           <CardFooter>
-            <Dialog onOpenChange={(open) => !open && loadingActivity === 'quiz' && setLoadingActivity(null)}>
-              <DialogTrigger asChild>
-                <Button className="w-full" onClick={() => { if (!quiz) onGenerate('quiz'); }} disabled={isAnyActivityLoading && loadingActivity !== 'quiz'}>
-                  {loadingActivity === 'quiz' ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  {quiz ? 'Take Quiz' : 'Generate Quiz'}
-                </Button>
-              </DialogTrigger>
-              {quiz && !isAnyActivityLoading && (
-                <DialogContent className="max-w-3xl w-full">
-                  <DialogHeader>
-                    <DialogTitle>Knowledge Check</DialogTitle>
-                  </DialogHeader>
-                  <QuizDisplay quiz={quiz} />
-                </DialogContent>
-              )}
-            </Dialog>
+             <Button className="w-full" onClick={() => hasGeneratedContent.quiz ? handleViewClick('quiz') : handleGenerateClick('quiz')} disabled={isAnyActivityLoading}>
+              {isAnyActivityLoading && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
+              {hasGeneratedContent.quiz ? 'Take Quiz' : 'Generate Quiz'}
+            </Button>
           </CardFooter>
         </Card>
       </div>

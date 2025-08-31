@@ -47,7 +47,8 @@ export function QuizDisplay({ quiz }: QuizDisplayProps) {
   if (isFinished) {
     const finalScore = (score / quiz.questions.length) * 100;
     return (
-        <div className="text-center p-6 flex flex-col items-center gap-4">
+      <div className="max-w-2xl mx-auto p-4 sm:p-6 md:p-8">
+        <Card className="text-center p-6 flex flex-col items-center gap-4 shadow-lg">
             <h2 className="text-2xl font-bold">Quiz Complete!</h2>
             <p className="text-lg text-muted-foreground">You scored</p>
             <div className="text-5xl font-bold text-primary">{score} / {quiz.questions.length}</div>
@@ -56,32 +57,36 @@ export function QuizDisplay({ quiz }: QuizDisplayProps) {
                 <RefreshCw className="mr-2 h-4 w-4"/>
                 Retake Quiz
             </Button>
-        </div>
+        </Card>
+      </div>
     )
   }
 
   if (!currentQuestion) {
     return (
-      <div className="text-center p-6 flex flex-col items-center gap-4">
-        <h2 className="text-xl font-bold">Invalid Quiz Data</h2>
-        <p className="text-muted-foreground">Could not load the quiz questions.</p>
-        <Button onClick={handleRestart}>
-            <RefreshCw className="mr-2 h-4 w-4"/>
-            Start Over
-        </Button>
+      <div className="max-w-2xl mx-auto p-4 sm:p-6 md:p-8">
+        <Card className="text-center p-6 flex flex-col items-center gap-4 shadow-lg">
+          <h2 className="text-xl font-bold">Invalid Quiz Data</h2>
+          <p className="text-muted-foreground">Could not load the quiz questions.</p>
+          <Button onClick={handleRestart}>
+              <RefreshCw className="mr-2 h-4 w-4"/>
+              Start Over
+          </Button>
+        </Card>
       </div>
     )
   }
   
   return (
-    <div className="p-2">
-      <Card>
+    <div className="max-w-2xl mx-auto p-4 sm:p-6 md:p-8">
+      <Card className="shadow-lg">
         <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Question {currentQuestionIndex + 1} of {quiz.questions.length}</CardTitle>
-            <Progress value={((currentQuestionIndex + 1) / quiz.questions.length) * 100} className="w-1/3" />
+          <div className="flex justify-between items-center mb-4">
+            <CardTitle>Question {currentQuestionIndex + 1}</CardTitle>
+            <p className="text-sm text-muted-foreground">{currentQuestionIndex + 1} of {quiz.questions.length}</p>
           </div>
-          <CardDescription className="pt-4 text-lg text-foreground">{currentQuestion.question}</CardDescription>
+          <Progress value={((currentQuestionIndex + 1) / quiz.questions.length) * 100} className="w-full" />
+          <CardDescription className="pt-6 text-lg text-foreground font-semibold">{currentQuestion.question}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-3">
@@ -111,7 +116,7 @@ export function QuizDisplay({ quiz }: QuizDisplayProps) {
             })}
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end">
+        <CardFooter className="flex justify-end mt-4">
           <Button onClick={handleNext} disabled={!selectedAnswer}>
             {currentQuestionIndex < quiz.questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
             <ChevronRight className="w-4 h-4 ml-2" />

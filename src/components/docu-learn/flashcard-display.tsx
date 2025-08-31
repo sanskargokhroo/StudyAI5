@@ -28,8 +28,9 @@ export function FlashcardDisplay({ flashcards }: FlashcardDisplayProps) {
   }
 
   return (
-    <div className='w-full h-full flex flex-col'>
-      <Carousel className="w-full max-w-md mx-auto flex-grow flex flex-col justify-center">
+    <div className='w-full h-full flex flex-col p-4 sm:p-6 md:p-8 justify-center items-center'>
+      <h1 className="text-3xl font-bold mb-6 text-center">Flashcards</h1>
+      <Carousel className="w-full max-w-xl flex-grow flex flex-col justify-center">
         <CarouselContent>
           {flashcards.map((card, index) => (
             <CarouselItem key={index}>
@@ -37,14 +38,14 @@ export function FlashcardDisplay({ flashcards }: FlashcardDisplayProps) {
                 <div className="flashcard-container" onClick={() => handleFlip(index)} role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleFlip(index)}>
                   <div className={cn("flashcard", { 'is-flipped': flipped[index] })}>
                     <div className="flashcard-face flashcard-front">
-                      <Card className="h-full">
+                      <Card className="h-full shadow-lg">
                         <CardContent className="flex flex-col items-center justify-center p-6 h-full text-center">
                           <p className="text-lg md:text-xl font-semibold">{card.front}</p>
                         </CardContent>
                       </Card>
                     </div>
                     <div className="flashcard-face flashcard-back">
-                      <Card className="h-full">
+                      <Card className="h-full shadow-lg">
                          <CardContent className="flex flex-col items-center justify-center p-6 h-full text-center">
                            <p className="text-md md:text-lg">{card.back}</p>
                         </CardContent>
@@ -60,7 +61,7 @@ export function FlashcardDisplay({ flashcards }: FlashcardDisplayProps) {
         <CarouselNext className="right-[-50px]" />
       </Carousel>
       <div className="text-center mt-4 text-sm text-muted-foreground">
-        Click a card to flip it. Use arrows to navigate.
+        Click a card to flip it. Use arrows to navigate. ({flashcards.length} cards)
       </div>
     </div>
   );

@@ -1,17 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { ActivityDashboard } from '@/components/docu-learn/activity-dashboard';
 import { UploadHandler } from '@/components/docu-learn/upload-handler';
 import { BrainCircuit } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { handleFileRead } from './actions';
 import { useToast } from '@/hooks/use-toast';
+import { StudyInterface } from '@/components/docu-learn/study-interface';
 
 export default function Home() {
   const [documentText, setDocumentText] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [showStudyInterface, setShowStudyInterface] = useState(false);
 
   const handleFileUpload = async (file: File) => {
     setIsLoading(true);
@@ -20,6 +21,7 @@ export default function Home() {
       formData.append('file', file);
       const text = await handleFileRead(formData);
       setDocumentText(text);
+      setShowStudyInterface(true); // Show study interface on successful upload
       toast({
         title: 'File uploaded successfully!',
         description: 'You can now generate notes, flashcards, or a quiz.',
@@ -39,7 +41,12 @@ export default function Home() {
 
   const handleReset = () => {
     setDocumentText(null);
+    setShowStudyInterface(false);
   };
+
+  if (showStudyInterface && documentText) {
+    return <StudyInterface documentText={documentText} onReset={handleReset} />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8">
@@ -59,11 +66,7 @@ export default function Home() {
           <p className="text-sm text-muted-foreground ml-[10%]">by Sanskar Gokhroo</p>
         </header>
 
-        {documentText ? (
-          <ActivityDashboard documentText={documentText} onReset={handleReset} />
-        ) : (
-          <UploadHandler onFileUpload={handleFileUpload} isLoading={isLoading} />
-        )}
+        <UploadHandler onFileUpload={handleFileUpload} isLoading={isLoading} />
 
         <footer className="text-center mt-12 text-sm text-muted-foreground">
           <p>Powered by AI. Built for modern learners.</p>
