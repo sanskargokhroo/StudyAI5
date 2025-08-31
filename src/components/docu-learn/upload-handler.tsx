@@ -82,7 +82,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
               <>
                 <UploadCloud className="w-12 h-12 text-muted-foreground mb-4" />
                 <p className="mb-4 text-muted-foreground">
-                  Drag & drop a PDF here or click below.
+                  upload your documents
                 </p>
                 <Button size="lg">
                     Upload PDF
