@@ -3,8 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { UploadCloud } from "lucide-react";
-import { Progress } from '@/components/ui/progress';
+import { LoaderCircle, UploadCloud } from "lucide-react";
 
 
 interface UploadHandlerProps {
@@ -14,28 +13,6 @@ interface UploadHandlerProps {
 
 export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-    if (isLoading) {
-      setProgress(0);
-      let progressValue = 0;
-      timer = setInterval(() => {
-        progressValue += Math.random() * 10;
-        if (progressValue >= 95) {
-          if(timer) clearInterval(timer);
-          progressValue = 95;
-        }
-        setProgress(progressValue);
-      }, 1500);
-    } else {
-      setProgress(0);
-    }
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [isLoading]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -73,18 +50,17 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
             }}
             >
             {isLoading ? (
-              <div className='w-full text-center'>
-                  <p className="mb-2 text-muted-foreground font-semibold">Processing... {Math.round(progress)}%</p>
-                  <p className="mb-4 text-sm text-muted-foreground">This may take a moment. Please wait.</p>
-                  <Progress value={progress} className="w-full" />
-              </div>
+              <>
+                  <LoaderCircle className="w-12 h-12 text-muted-foreground mb-4 animate-spin"/>
+                  <p className="mb-4 text-muted-foreground">Processing your document...</p>
+              </>
             ) : (
               <>
                 <UploadCloud className="w-12 h-12 text-muted-foreground mb-4" />
                 <p className="mb-4 text-muted-foreground">
-                  upload your documents
+                  Drag & drop a PDF here or click below
                 </p>
-                <Button size="lg">
+                <Button size="lg" onClick={(e) => { e.stopPropagation(); handleClick(); }}>
                     Upload PDF
                 </Button>
               </>
