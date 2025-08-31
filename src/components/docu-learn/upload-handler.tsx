@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoaderCircle, UploadCloud } from "lucide-react";
+import { Progress } from '@/components/ui/progress';
 
 
 interface UploadHandlerProps {
@@ -13,13 +14,35 @@ interface UploadHandlerProps {
 
 export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    if (isLoading) {
+      setProgress(0);
+      interval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 95) {
+            if (interval) clearInterval(interval);
+            return 95;
+          }
+          return prev + 5;
+        });
+      }, 500);
+    } else {
+      setProgress(100);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isLoading]);
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       onFileUpload(file);
     }
-    // Reset the input value to allow uploading the same file again
     event.target.value = '';
   };
 
@@ -50,15 +73,16 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
             }}
             >
             {isLoading ? (
-              <>
-                  <LoaderCircle className="w-12 h-12 text-muted-foreground mb-4 animate-spin"/>
-                  <p className="mb-4 text-muted-foreground">Processing your document...</p>
-              </>
+              <div className="w-full max-w-xs text-center">
+                <p className="mb-4 text-muted-foreground">Processing your document...</p>
+                <Progress value={progress} className="w-full" />
+                <p className="mt-2 text-sm text-muted-foreground">{Math.round(progress)}%</p>
+            </div>
             ) : (
               <>
                 <UploadCloud className="w-12 h-12 text-muted-foreground mb-4" />
                 <p className="mb-4 text-muted-foreground">
-                  Drag & drop a PDF here or click below
+                  Upload Document
                 </p>
                 <Button size="lg" onClick={(e) => { e.stopPropagation(); handleClick(); }}>
                     Upload PDF
