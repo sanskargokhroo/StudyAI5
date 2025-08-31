@@ -33,9 +33,14 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateQuizOutputSchema},
   prompt: `You are an expert in creating quizzes from provided documents. Based on the content of the document, generate a quiz with multiple-choice questions that effectively tests the user's understanding of the material.
 
-Respond with ONLY the quiz content in a JSON string, without any additional explanatory text. The JSON should be an array of questions. Each question object must have three properties: "question" (string), "options" (an array of 4 strings), and "answer" (a string that exactly matches one of the options).
+You MUST respond with ONLY a valid JSON string. Do not include any explanatory text, markdown formatting like \`\`\`json, or anything else outside of the JSON object.
 
-For example:
+The JSON object should have a single root key "quiz", which contains an object with a "questions" key. The "questions" key should be an array of question objects. Each question object must have three properties:
+1. "question": A string for the question text.
+2. "options": An array of exactly 4 strings representing the multiple-choice options.
+3. "answer": A string that EXACTLY matches one of the provided options.
+
+Here is an example of the required JSON format:
 {
   "quiz": {
     "questions": [
@@ -55,7 +60,8 @@ For example:
 
 Document Content: {{{documentText}}}
 
-Quiz:`,
+Generate the quiz now.
+`,
 });
 
 const generateQuizFlow = ai.defineFlow(
