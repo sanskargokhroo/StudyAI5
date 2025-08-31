@@ -21,8 +21,8 @@ export default function Home() {
       const text = await handleFileRead(formData);
       setDocumentText(text);
       toast({
-        title: 'File Uploaded Successfully',
-        description: 'You can now generate notes, flashcards, or a quiz.',
+        title: 'File Uploaded Successfully!',
+        description: 'Your document has been processed. You can now generate notes, flashcards, or a quiz.',
       });
     } catch (error) {
       console.error("Failed to process file:", error);
