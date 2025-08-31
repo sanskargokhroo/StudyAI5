@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   handleCreateFlashcards,
   handleGenerateNotes,
@@ -11,10 +11,8 @@ import { useToast } from '@/hooks/use-toast';
 import { FlashcardDisplay } from './flashcard-display';
 import { QuizDisplay } from './quiz-display';
 import { NotesDisplay } from './notes-display';
-import { SidebarProvider, Sidebar, SidebarTrigger, SidebarContent, SidebarInset, useSidebar } from '@/components/ui/sidebar';
-import { SidebarNav } from './sidebar-nav';
 import { Button } from '../ui/button';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, ArrowLeft } from 'lucide-react';
 import { ThemeToggle } from '../theme-toggle';
 import { ActivityDashboard } from './activity-dashboard';
 import { LoaderCircle } from 'lucide-react';
@@ -70,30 +68,6 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
     quiz: quiz !== null,
   };
 
-  const handleNavClick = (activity: Activity) => {
-    if (activity === 'home') {
-      setActiveActivity('home');
-    } else if (activity === 'notes') {
-      if (hasGeneratedContent.notes) {
-        setActiveActivity('notes');
-      } else {
-        onGenerate('notes');
-      }
-    } else if (activity === 'flashcards') {
-      if (hasGeneratedContent.flashcards) {
-        setActiveActivity('flashcards');
-      } else {
-        onGenerate('flashcards');
-      }
-    } else if (activity === 'quiz') {
-        if (hasGeneratedContent.quiz) {
-            setActiveActivity('quiz');
-        } else {
-            onGenerate('quiz');
-        }
-    }
-  };
-
   const renderContent = () => {
     if (isAnyActivityLoading) {
       return (
@@ -110,7 +84,7 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
           onGenerate={onGenerate} 
           isAnyActivityLoading={isAnyActivityLoading}
           hasGeneratedContent={hasGeneratedContent}
-          setActiveActivity={handleNavClick}
+          setActiveActivity={setActiveActivity}
         />;
       case 'notes':
         return notes ? <NotesDisplay notes={notes} /> : <p>Generate notes to see them here.</p>;
@@ -123,21 +97,22 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
           onGenerate={onGenerate} 
           isAnyActivityLoading={isAnyActivityLoading}
           hasGeneratedContent={hasGeneratedContent}
-          setActiveActivity={handleNavClick}
+          setActiveActivity={setActiveActivity}
         />;
     }
   };
 
   return (
-    <SidebarProvider>
-      <Sidebar side="left" collapsible="offcanvas">
-        <SidebarContent className="p-2">
-          <SidebarNav activeActivity={activeActivity} setActiveActivity={handleNavClick} />
-        </SidebarContent>
-      </Sidebar>
-      <SidebarInset>
-        <div className="p-4 flex justify-between items-center border-b">
-           <SidebarTrigger />
+    <div className="min-h-screen flex flex-col">
+       <header className="p-4 flex justify-between items-center border-b">
+           <div>
+            {activeActivity !== 'home' && (
+                <Button variant="outline" onClick={() => setActiveActivity('home')} className="shrink-0">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back
+                </Button>
+            )}
+           </div>
            <div className="flex gap-2 items-center">
             <Button variant="outline" onClick={onReset} className="shrink-0">
                 <RotateCcw className="mr-2 h-4 w-4" />
@@ -145,11 +120,10 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
             </Button>
             <ThemeToggle />
            </div>
-        </div>
-        <main className="flex-1 p-4 overflow-auto">
+        </header>
+        <main className="flex-1 overflow-auto">
           {renderContent()}
         </main>
-      </SidebarInset>
-    </SidebarProvider>
+    </div>
   );
 }

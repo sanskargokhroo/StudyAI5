@@ -5,7 +5,6 @@ import {
   FileText,
   HelpCircle,
   LoaderCircle,
-  Home,
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,7 +17,7 @@ interface ActivityDashboardProps {
     flashcards: boolean;
     quiz: boolean;
   };
-  setActiveActivity: (activity: 'notes' | 'flashcards' | 'quiz' | 'home') => void;
+  setActiveActivity: (activity: 'notes' | 'flashcards' | 'quiz') => void;
 }
 
 export function ActivityDashboard({
@@ -30,7 +29,6 @@ export function ActivityDashboard({
 
   const handleGenerateClick = (activity: 'notes' | 'flashcards' | 'quiz') => {
     onGenerate(activity);
-    setActiveActivity(activity);
   };
 
   const handleViewClick = (activity: 'notes' | 'flashcards' | 'quiz') => {
