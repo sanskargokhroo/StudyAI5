@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { UploadCloud, LoaderCircle } from "lucide-react";
-import Image from "next/image";
 
 interface UploadHandlerProps {
   onFileUpload: () => void;
@@ -12,18 +11,8 @@ interface UploadHandlerProps {
 
 export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center animate-in fade-in duration-500">
-      <div className="rounded-lg overflow-hidden shadow-xl aspect-video">
-        <Image 
-          src="https://picsum.photos/600/400" 
-          alt="Person studying with documents" 
-          width={600} 
-          height={400}
-          className="w-full h-full object-cover"
-          data-ai-hint="student learning"
-        />
-      </div>
-      <Card className="w-full shadow-lg">
+    <div className="grid grid-cols-1 md:grid-cols-1 gap-8 items-center animate-in fade-in duration-500">
+      <Card className="w-full max-w-lg mx-auto shadow-lg">
         <CardHeader>
           <CardTitle className="font-headline">Start Learning Now</CardTitle>
           <CardDescription>Upload a PDF or DOC file to begin.</CardDescription>
