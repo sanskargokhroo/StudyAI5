@@ -41,7 +41,7 @@ const prompt = ai.definePrompt({
   prompt: `You are an expert at extracting text from documents.
 Please extract all the text from the following PDF file.
 PDF: {{media url=pdfDataUri}}`,
-  model: 'gemini-pro'
+  model: 'googleai/gemini-1.5-flash-latest'
 });
 
 const extractTextFromPdfFlow = ai.defineFlow(
