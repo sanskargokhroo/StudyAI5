@@ -1,27 +1,33 @@
 'use client';
 
 import { useState } from 'react';
-import { Quiz } from '@/lib/types';
+import { Quiz, QuizQuestion } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { CheckCircle, XCircle, ChevronRight, RefreshCw } from 'lucide-react';
+import { CheckCircle, XCircle, ChevronRight, RefreshCw, LoaderCircle, Lightbulb } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { handleExplainAnswer } from '@/app/actions';
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 
 interface QuizDisplayProps {
   quiz: Quiz;
+  onRestart: () => void;
 }
 
-export function QuizDisplay({ quiz }: QuizDisplayProps) {
+export function QuizDisplay({ quiz, onRestart }: QuizDisplayProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [isFinished, setIsFinished] = useState(false);
+  const [explanations, setExplanations] = useState<Record<number, string>>({});
+  const [explainingIndex, setExplainingIndex] = useState<number | null>(null);
 
   const currentQuestion = quiz.questions[currentQuestionIndex];
   const selectedAnswer = selectedAnswers[currentQuestionIndex];
 
   const handleSelectAnswer = (option: string) => {
-    if (selectedAnswer) return; // Prevent changing answer
+    if (selectedAnswer) return;
     setSelectedAnswers((prev) => ({ ...prev, [currentQuestionIndex]: option }));
   };
 
@@ -32,12 +38,22 @@ export function QuizDisplay({ quiz }: QuizDisplayProps) {
       setIsFinished(true);
     }
   };
-  
-  const handleRestart = () => {
-    setCurrentQuestionIndex(0);
-    setSelectedAnswers({});
-    setIsFinished(false);
-  }
+
+  const handleExplain = async (questionIndex: number) => {
+    if (explanations[questionIndex] || explainingIndex !== null) return;
+    setExplainingIndex(questionIndex);
+    try {
+      const question = quiz.questions[questionIndex];
+      const userAnswer = selectedAnswers[questionIndex];
+      const result = await handleExplainAnswer(question, userAnswer);
+      setExplanations((prev) => ({ ...prev, [questionIndex]: result.explanation }));
+    } catch (error) {
+      console.error("Error explaining answer:", error);
+      setExplanations((prev) => ({ ...prev, [questionIndex]: "Sorry, I couldn't generate an explanation right now." }));
+    } finally {
+      setExplainingIndex(null);
+    }
+  };
 
   const score = Object.keys(selectedAnswers).reduce((acc, indexStr) => {
     const index = parseInt(indexStr, 10);
@@ -47,17 +63,60 @@ export function QuizDisplay({ quiz }: QuizDisplayProps) {
   if (isFinished) {
     const finalScore = (score / quiz.questions.length) * 100;
     return (
-      <div className="max-w-2xl mx-auto p-4 sm:p-6 md:p-8">
-        <Card className="text-center p-6 flex flex-col items-center gap-4 shadow-lg">
+      <div className="max-w-3xl mx-auto p-4 sm:p-6 md:p-8">
+        <Card className="text-center p-6 flex flex-col items-center gap-4 shadow-lg mb-8">
             <h2 className="text-2xl font-bold">Quiz Complete!</h2>
             <p className="text-lg text-muted-foreground">You scored</p>
             <div className="text-5xl font-bold text-primary">{score} / {quiz.questions.length}</div>
             <Progress value={finalScore} className="w-full my-4" />
-            <Button onClick={handleRestart}>
+            <Button onClick={onRestart}>
                 <RefreshCw className="mr-2 h-4 w-4"/>
-                Retake Quiz
+                Retake Quiz (New Questions)
             </Button>
         </Card>
+
+        <h3 className="text-xl font-bold text-center mb-4">Review Your Answers</h3>
+        <Accordion type="single" collapsible className="w-full">
+          {quiz.questions.map((q, index) => {
+            const userAnswer = selectedAnswers[index];
+            const isCorrect = userAnswer === q.answer;
+            return (
+              <AccordionItem value={`item-${index}`} key={index}>
+                <AccordionTrigger>
+                    <div className="flex items-center gap-3">
+                        {isCorrect ? <CheckCircle className="w-5 h-5 text-green-500" /> : <XCircle className="w-5 h-5 text-red-500" />}
+                        <span className="text-left flex-1">{q.question}</span>
+                    </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                    <div className='p-2 space-y-4'>
+                        <p><strong>Your Answer: </strong><span className={cn(isCorrect ? 'text-green-400' : 'text-red-400')}>{userAnswer}</span></p>
+                        {!isCorrect && <p><strong>Correct Answer: </strong><span className='text-green-400'>{q.answer}</span></p>}
+                        
+                        {!isCorrect && (
+                             <div>
+                                {explanations[index] ? (
+                                    <Alert>
+                                        <Lightbulb className="h-4 w-4" />
+                                        <AlertTitle>Explanation</AlertTitle>
+                                        <AlertDescription>
+                                            {explanations[index]}
+                                        </AlertDescription>
+                                    </Alert>
+                                ) : (
+                                    <Button size="sm" variant="outline" onClick={() => handleExplain(index)} disabled={explainingIndex !== null}>
+                                        {explainingIndex === index ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : <Lightbulb className="mr-2 h-4 w-4" />}
+                                        {explainingIndex === index ? 'Generating...' : 'Explain'}
+                                    </Button>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </AccordionContent>
+              </AccordionItem>
+            )
+          })}
+        </Accordion>
       </div>
     )
   }
@@ -68,7 +127,7 @@ export function QuizDisplay({ quiz }: QuizDisplayProps) {
         <Card className="text-center p-6 flex flex-col items-center gap-4 shadow-lg">
           <h2 className="text-xl font-bold">Invalid Quiz Data</h2>
           <p className="text-muted-foreground">Could not load the quiz questions.</p>
-          <Button onClick={handleRestart}>
+          <Button onClick={onRestart}>
               <RefreshCw className="mr-2 h-4 w-4"/>
               Start Over
           </Button>
@@ -102,8 +161,8 @@ export function QuizDisplay({ quiz }: QuizDisplayProps) {
                   size="lg"
                   className={cn(
                     'justify-start h-auto py-3 text-left whitespace-normal',
-                    showResult && isCorrect && 'border-green-500 bg-green-500/10 hover:bg-green-500/20 text-green-700',
-                    showResult && isSelected && !isCorrect && 'border-red-500 bg-red-500/10 hover:bg-red-500/20 text-red-700',
+                    showResult && isCorrect && 'border-green-600 bg-green-900/30 hover:bg-green-900/40 text-green-400',
+                    showResult && isSelected && !isCorrect && 'border-red-600 bg-red-900/30 hover:bg-red-900/40 text-red-400',
                   )}
                   onClick={() => handleSelectAnswer(option)}
                   disabled={!!selectedAnswer}

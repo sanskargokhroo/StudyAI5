@@ -3,7 +3,8 @@
 import { createFlashcardsFromDocument } from '@/ai/flows/create-flashcards-from-document';
 import { generateNotesFromDocument } from '@/ai/flows/generate-notes-from-document';
 import { generateQuiz } from '@/ai/flows/generate-quiz-from-document';
-import { Quiz } from '@/lib/types';
+import { explainQuizAnswer } from '@/ai/flows/explain-quiz-answer';
+import { Quiz, QuizQuestion } from '@/lib/types';
 import mammoth from 'mammoth';
 import { extractTextFromPdf } from '@/ai/flows/extract-text-from-pdf';
 
@@ -108,4 +109,13 @@ export async function handleCreateFlashcards(documentText: string) {
 
 export async function handleGenerateNotes(documentText: string) {
   return await generateNotesFromDocument({ documentText });
+}
+
+export async function handleExplainAnswer(question: QuizQuestion, userAnswer: string) {
+  return await explainQuizAnswer({
+    question: question.question,
+    options: question.options,
+    correctAnswer: question.answer,
+    userAnswer: userAnswer,
+  });
 }

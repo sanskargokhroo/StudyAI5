@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
   handleCreateFlashcards,
   handleGenerateNotes,
@@ -31,8 +31,20 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
   const [notes, setNotes] = useState<string>('');
   const { toast } = useToast();
 
-  const onGenerate = async (activity: 'quiz' | 'flashcards' | 'notes') => {
-    if (isAnyActivityLoading) return;
+  const onGenerate = useCallback(async (activity: 'quiz' | 'flashcards' | 'notes', forceNew = false) => {
+    if (loadingActivity) return;
+
+    const hasContent = {
+        notes: notes !== '',
+        flashcards: flashcards.length > 0,
+        quiz: quiz !== null,
+    };
+
+    if (!forceNew && hasContent[activity]) {
+        setActiveActivity(activity);
+        return;
+    }
+
     setLoadingActivity(activity);
     try {
       if (activity === 'quiz') {
@@ -53,11 +65,11 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
         title: 'An error occurred',
         description: (error as Error).message || `Failed to generate ${activity}.`,
       });
-      setActiveActivity('home'); // Go back to home on error
+      setActiveActivity('home');
     } finally {
       setLoadingActivity(null);
     }
-  };
+  }, [documentText, flashcards.length, loadingActivity, notes, quiz, toast]);
   
   const isAnyActivityLoading = loadingActivity !== null;
 
@@ -66,6 +78,11 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
     flashcards: flashcards.length > 0,
     quiz: quiz !== null,
   };
+  
+  const handleQuizRestart = () => {
+    onGenerate('quiz', true);
+  };
+
 
   const renderContent = () => {
     if (isAnyActivityLoading) {
@@ -83,20 +100,20 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
           onGenerate={onGenerate} 
           isAnyActivityLoading={isAnyActivityLoading}
           hasGeneratedContent={hasGeneratedContent}
-          setActiveActivity={setActiveActivity}
+          setActiveActivity={onGenerate}
         />;
       case 'notes':
-        return notes ? <NotesDisplay notes={notes} /> : <p>Generate notes to see them here.</p>;
+        return notes ? <NotesDisplay notes={notes} /> : null;
       case 'flashcards':
-        return flashcards.length > 0 ? <FlashcardDisplay flashcards={flashcards} /> : <p>Generate flashcards to see them here.</p>;
+        return flashcards.length > 0 ? <FlashcardDisplay flashcards={flashcards} /> : null;
       case 'quiz':
-        return quiz ? <QuizDisplay quiz={quiz} /> : <p>Generate a quiz to see it here.</p>;
+        return quiz ? <QuizDisplay quiz={quiz} onRestart={handleQuizRestart} /> : null;
       default:
         return <ActivityDashboard 
           onGenerate={onGenerate} 
           isAnyActivityLoading={isAnyActivityLoading}
           hasGeneratedContent={hasGeneratedContent}
-          setActiveActivity={setActiveActivity}
+          setActiveActivity={onGenerate}
         />;
     }
   };
