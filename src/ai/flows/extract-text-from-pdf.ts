@@ -38,7 +38,7 @@ const prompt = ai.definePrompt({
   name: 'extractTextFromPdfPrompt',
   input: {schema: ExtractTextFromPdfInputSchema},
   output: {schema: ExtractTextFromPdfOutputSchema},
-  model: 'googleai/gemini-1.5-pro-latest',
+  model: 'googleai/gemini-1.5-flash-latest',
   prompt: `You are an expert at extracting text from documents.
 Please extract all the text from the following PDF file.
 PDF: {{media url=pdfDataUri}}`,
