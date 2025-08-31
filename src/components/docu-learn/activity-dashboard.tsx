@@ -16,7 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Layers,
   FileText,
@@ -75,28 +74,13 @@ export function ActivityDashboard({ documentText, onReset }: ActivityDashboardPr
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      <Card className="shadow-lg">
-        <CardHeader className="flex flex-row flex-wrap justify-between items-start gap-4">
-          <div>
-            <CardTitle className="font-headline">Your Document</CardTitle>
-            <CardDescription>
-              The extracted text is ready for your learning journey.
-            </CardDescription>
-          </div>
-          <div className='flex gap-2 items-center'>
-            <PodcastPlayer text={documentText} />
-            <Button variant="outline" onClick={onReset} className="shrink-0">
-              <RotateCcw className="mr-2 h-4 w-4" />
-              Start Over
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-48 rounded-md border p-4 bg-background">
-            <p className="text-sm text-foreground/90">{documentText}</p>
-          </ScrollArea>
-        </CardContent>
-      </Card>
+      <div className="flex justify-end gap-2 items-center">
+          <PodcastPlayer text={documentText} />
+          <Button variant="outline" onClick={onReset} className="shrink-0">
+            <RotateCcw className="mr-2 h-4 w-4" />
+            Upload New Document
+          </Button>
+      </div>
 
       <div className="text-center">
         <h2 className="text-2xl font-bold font-headline">Choose Your Study Tool</h2>
