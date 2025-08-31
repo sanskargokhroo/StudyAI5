@@ -5,11 +5,18 @@ import { generateNotesFromDocument } from '@/ai/flows/generate-notes-from-docume
 import { generateQuiz } from '@/ai/flows/generate-quiz-from-document';
 import { Quiz } from '@/lib/types';
 import mammoth from 'mammoth';
+import { extractTextFromPdf } from '@/ai/flows/extract-text-from-pdf';
 
 
 async function getTextFromDocx(buffer: Buffer): Promise<string> {
     const result = await mammoth.extractRawText({ buffer });
     return result.value;
+}
+
+async function getTextFromPdf(buffer: Buffer): Promise<string> {
+    const pdfDataUri = `data:application/pdf;base64,${buffer.toString('base64')}`;
+    const result = await extractTextFromPdf({ pdfDataUri });
+    return result.extractedText;
 }
 
 export async function handleFileRead(formData: FormData): Promise<string> {
@@ -22,18 +29,18 @@ export async function handleFileRead(formData: FormData): Promise<string> {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     if (file.type === 'application/pdf') {
-        throw new Error('PDF files are not supported. Please use a .txt or .docx file.');
+        return getTextFromPdf(buffer);
     }
 
     if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-        return getTextFromDocx(buffer);
+       throw new Error('DOCX files are not supported. Please use a PDF file.');
     }
 
     if (file.type === 'text/plain') {
-        return buffer.toString('utf-8');
+       throw new Error('TXT files are not supported. Please use a PDF file.');
     }
     
-    throw new Error(`Unsupported file type: ${file.type}`);
+    throw new Error(`Unsupported file type: ${file.type}. Please upload a PDF.`);
 }
 
 

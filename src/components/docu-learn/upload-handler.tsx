@@ -30,7 +30,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
       <Card className="w-full max-w-lg mx-auto shadow-lg">
         <CardHeader className="text-center">
           <CardTitle className="font-headline">Start Learning Now</CardTitle>
-          <CardDescription>Upload doc or txt to generate quizzes, flashcards, and notes with AI.</CardDescription>
+          <CardDescription>Upload a PDF to generate quizzes, flashcards, and notes with AI.</CardDescription>
         </CardHeader>
         <CardContent>
           <div 
@@ -45,7 +45,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
             >
             <UploadCloud className="w-12 h-12 text-muted-foreground mb-4" />
             <p className="mb-4 text-muted-foreground">
-              Drag & drop file here or click below.
+              Drag & drop a PDF here or click below.
             </p>
             <Button onClick={handleClick} disabled={isLoading} size="lg">
               {isLoading ? (
@@ -54,7 +54,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
                   Processing...
                 </>
               ) : (
-                "Upload Document"
+                "Upload PDF"
               )}
             </Button>
             <input
@@ -62,7 +62,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
               ref={inputRef}
               onChange={handleFileChange}
               className="hidden"
-              accept=".doc,.docx,.txt"
+              accept=".pdf"
             />
           </div>
         </CardContent>
