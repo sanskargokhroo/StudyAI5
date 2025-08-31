@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { UploadCloud, LoaderCircle } from "lucide-react";
+import { UploadCloud } from "lucide-react";
 import { Progress } from '@/components/ui/progress';
 
 
@@ -74,8 +74,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
             >
             {isLoading ? (
               <div className='w-full text-center'>
-                  <LoaderCircle className="w-12 h-12 text-muted-foreground mb-4 inline-animate-spin" />
-                  <p className="mb-2 text-muted-foreground font-semibold">Processing your document...</p>
+                  <p className="mb-2 text-muted-foreground font-semibold">Processing... {Math.round(progress)}%</p>
                   <p className="mb-4 text-sm text-muted-foreground">This may take a moment. Please wait.</p>
                   <Progress value={progress} className="w-full" />
               </div>
@@ -85,7 +84,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
                 <p className="mb-4 text-muted-foreground">
                   Drag & drop a PDF here or click below.
                 </p>
-                <Button size="lg">
+                <Button size="lg" onClick={(e) => e.stopPropagation()}>
                     Upload PDF
                 </Button>
               </>
