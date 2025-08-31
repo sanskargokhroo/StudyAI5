@@ -30,7 +30,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
       <Card className="w-full max-w-lg mx-auto shadow-lg">
         <CardHeader className="text-center">
           <CardTitle className="font-headline">Start Learning Now</CardTitle>
-          <CardDescription>Upload pdf, doc to generate quizzes, flashcards, and notes with AI.</CardDescription>
+          <CardDescription>Upload doc or txt to generate quizzes, flashcards, and notes with AI.</CardDescription>
         </CardHeader>
         <CardContent>
           <div 
@@ -62,7 +62,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
               ref={inputRef}
               onChange={handleFileChange}
               className="hidden"
-              accept=".pdf,.doc,.docx,.txt"
+              accept=".doc,.docx,.txt"
             />
           </div>
         </CardContent>

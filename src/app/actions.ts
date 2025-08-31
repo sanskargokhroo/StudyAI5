@@ -12,11 +12,6 @@ async function getTextFromDocx(buffer: Buffer): Promise<string> {
     return result.value;
 }
 
-async function getTextFromPdf(buffer: Buffer): Promise<string> {
-    throw new Error('PDF processing is temporarily unavailable. Please use a .txt or .docx file.');
-}
-
-
 export async function handleFileRead(formData: FormData): Promise<string> {
     const file = formData.get('file') as File;
 
@@ -27,7 +22,7 @@ export async function handleFileRead(formData: FormData): Promise<string> {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     if (file.type === 'application/pdf') {
-        return getTextFromPdf(buffer);
+        throw new Error('PDF files are not supported. Please use a .txt or .docx file.');
     }
 
     if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
