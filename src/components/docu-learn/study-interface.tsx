@@ -11,7 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { FlashcardDisplay } from './flashcard-display';
 import { QuizDisplay } from './quiz-display';
 import { NotesDisplay } from './notes-display';
-import { SidebarProvider, Sidebar, SidebarTrigger, SidebarContent, SidebarHeader, SidebarFooter, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarProvider, Sidebar, SidebarTrigger, SidebarContent, SidebarInset } from '@/components/ui/sidebar';
 import { SidebarNav } from './sidebar-nav';
 import { Button } from '../ui/button';
 import { RotateCcw } from 'lucide-react';
@@ -105,7 +105,7 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
 
   return (
     <SidebarProvider>
-      <Sidebar side="left" collapsible="icon">
+      <Sidebar side="left" collapsible="offcanvas">
         <SidebarContent className="p-2">
           <SidebarNav activeActivity={activeActivity} setActiveActivity={setActiveActivity} />
         </SidebarContent>
