@@ -27,7 +27,6 @@ import { useToast } from '@/hooks/use-toast';
 import { FlashcardDisplay } from './flashcard-display';
 import { QuizDisplay } from './quiz-display';
 import { NotesDisplay } from './notes-display';
-import { PodcastPlayer } from './podcast-player';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 
@@ -75,7 +74,6 @@ export function ActivityDashboard({ documentText, onReset }: ActivityDashboardPr
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex justify-end gap-2 items-center">
-          <PodcastPlayer text={documentText} />
           <Button variant="outline" onClick={onReset} className="shrink-0">
             <RotateCcw className="mr-2 h-4 w-4" />
             Upload New Document
