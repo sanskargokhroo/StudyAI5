@@ -105,6 +105,10 @@ export function ActivityDashboard({ documentText, onReset }: ActivityDashboardPr
                 {loadingActivity === 'notes' ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
                 Generate Notes
             </Button>}
+             {notes && <Button className="w-full" onClick={() => onGenerate('notes')} disabled={isAnyActivityLoading}>
+                {loadingActivity === 'notes' ? <LoaderCircle className="mr-2 h-4 w-4 animate-spin" /> : null}
+                Regenerate Notes
+            </Button>}
           </CardFooter>
         </Card>
 

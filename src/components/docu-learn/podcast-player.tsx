@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Pause } from 'lucide-react';
+import { Play, Pause, LoaderCircle } from 'lucide-react';
 
 interface PodcastPlayerProps {
   text: string;
@@ -10,6 +10,11 @@ interface PodcastPlayerProps {
 export function PodcastPlayer({ text }: PodcastPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handlePlay = useCallback(() => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
@@ -62,6 +67,14 @@ export function PodcastPlayer({ text }: PodcastPlayerProps) {
       handlePlay();
     }
   };
+  
+  if (!isMounted) {
+      return (
+          <Button variant="outline" size="icon" disabled>
+              <LoaderCircle className="h-4 w-4 animate-spin" />
+          </Button>
+      )
+  }
 
   return (
     <Button variant="outline" size="icon" onClick={togglePlayPause} aria-label={isPlaying ? "Pause audio" : "Play audio"}>
