@@ -84,7 +84,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
                 <p className="mb-4 text-muted-foreground">
                   Drag & drop a PDF here or click below.
                 </p>
-                <Button size="lg" onClick={(e) => e.stopPropagation()}>
+                <Button size="lg">
                     Upload PDF
                 </Button>
               </>
