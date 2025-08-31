@@ -33,7 +33,7 @@ export default function Home() {
                 <BookOpen className="w-8 h-8 text-primary-foreground" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight text-foreground">
-              DocuLearn
+              SanskarAI
             </h1>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
