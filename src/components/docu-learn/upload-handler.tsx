@@ -47,7 +47,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
             <p className="mb-4 text-muted-foreground">
               Drag & drop file here or click below.
             </p>
-            <Button onClick={(e) => {e.stopPropagation(); handleClick();}} disabled={isLoading} size="lg">
+            <Button onClick={handleClick} disabled={isLoading} size="lg">
               {isLoading ? (
                 <>
                   <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
