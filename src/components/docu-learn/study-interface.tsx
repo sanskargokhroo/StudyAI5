@@ -130,11 +130,14 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
             )}
            </div>
             <div className="w-1/3 flex justify-center">
-                <div className="inline-flex items-center gap-2">
-                    <BrainCircuit className="w-6 h-6 text-primary" />
-                    <h1 className="text-xl font-bold font-headline tracking-tight text-foreground">
-                        StudyAI
-                    </h1>
+                <div className="flex flex-col items-center">
+                    <div className="inline-flex items-center gap-2">
+                        <BrainCircuit className="w-6 h-6 text-primary" />
+                        <h1 className="text-xl font-bold font-headline tracking-tight text-foreground">
+                            StudyAI
+                        </h1>
+                    </div>
+                    <p className="text-xs text-muted-foreground ml-2">by Sanskar Gokhroo</p>
                 </div>
             </div>
            <div className="w-1/3 flex justify-end">
