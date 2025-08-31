@@ -13,9 +13,7 @@ async function getTextFromDocx(buffer: Buffer): Promise<string> {
 }
 
 async function getTextFromPdf(buffer: Buffer): Promise<string> {
-    const pdf = (await import('pdf-parse')).default;
-    const data = await pdf(buffer);
-    return data.text;
+    throw new Error('PDF processing is temporarily unavailable. Please use a .txt or .docx file.');
 }
 
 
