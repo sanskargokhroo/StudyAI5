@@ -15,7 +15,6 @@ import { Button } from '../ui/button';
 import { RotateCcw, ArrowLeft, BrainCircuit } from 'lucide-react';
 import { ActivityDashboard } from './activity-dashboard';
 import { LoaderCircle } from 'lucide-react';
-import { ThemeToggle } from '../theme-toggle';
 
 interface StudyInterfaceProps {
   documentText: string;
@@ -142,7 +141,6 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
                 </div>
             </div>
            <div className="w-1/3 flex justify-end gap-2">
-            <ThemeToggle />
             <Button variant="outline" onClick={onReset} className="shrink-0">
                 <RotateCcw className="mr-2 h-4 w-4" />
                 Upload New
