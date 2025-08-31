@@ -137,7 +137,7 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
                             StudyAI
                         </h1>
                     </div>
-                    <p className="text-xs text-muted-foreground ml-2">by Sanskar Gokhroo</p>
+                    <p className="text-xs text-muted-foreground pr-10">by Sanskar Gokhroo</p>
                 </div>
             </div>
            <div className="w-1/3 flex justify-end gap-2">
