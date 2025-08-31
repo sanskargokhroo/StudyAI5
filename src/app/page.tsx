@@ -36,7 +36,8 @@ export default function Home() {
               StudyAI
             </h1>
           </div>
-          <p className="text-md text-muted-foreground">by Sanskar Gokhroo</p>
+          <p className="text-sm italic text-accent-foreground/80">Your Personal AI Learning Assistant</p>
+          <p className="text-md text-muted-foreground mt-2">by Sanskar Gokhroo</p>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
             Upload your documents and unlock a world of interactive learning. Generate quizzes, flashcards, notes, and more with the power of AI.
           </p>
