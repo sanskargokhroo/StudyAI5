@@ -42,9 +42,6 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-sm text-muted-foreground -mt-1 ml-[10%]">by Sanskar Gokhroo</p>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
-            Upload your documents to generate quizzes, flashcards, and notes with AI.
-          </p>
         </header>
 
         {documentText ? (

@@ -15,7 +15,7 @@ export function UploadHandler({ onFileUpload, isLoading }: UploadHandlerProps) {
       <Card className="w-full max-w-lg mx-auto shadow-lg">
         <CardHeader>
           <CardTitle className="font-headline">Start Learning Now</CardTitle>
-          <CardDescription>Upload a PDF or DOC file to begin.</CardDescription>
+          <CardDescription>Upload your documents to generate quizzes, flashcards, and notes with AI.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-border rounded-lg text-center bg-background">
