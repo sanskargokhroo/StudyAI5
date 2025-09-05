@@ -24,7 +24,7 @@ export async function handleFileRead(formData: FormData): Promise<string> {
     const file = formData.get('file') as File;
 
     if (!file) {
-        throw new Error('No file uploaded.');
+        throw new Error('No file was uploaded.');
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -34,14 +34,14 @@ export async function handleFileRead(formData: FormData): Promise<string> {
     }
 
     if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-       throw new Error('DOCX files are not supported. Please use a PDF file.');
+       throw new Error('DOCX files are not supported yet. Please upload a PDF file.');
     }
 
     if (file.type === 'text/plain') {
-       throw new Error('TXT files are not supported. Please use a PDF file.');
+       throw new Error('TXT files are not supported. Please use a PDF file instead.');
     }
     
-    throw new Error(`Unsupported file type: ${file.type}. Please upload a PDF.`);
+    throw new Error(`Unsupported file type: '${file.type}'. Please upload a PDF.`);
 }
 
 
