@@ -5,3 +5,11 @@ runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+  # To use secrets, you have to grant the Secret Manager Secret Accessor
+  # role to the service account 'service-PROJECT_NUMBER@gcp-sa-apphosting.iam.gserviceaccount.com'
+  # see: https://firebase.google.com/docs/app-hosting/configure#secrets
+  secrets:
+    - secret: GEMINI_API_KEY
+      # This environment variable will be available in your app.
+      # You can access it using process.env.GEMINI_API_KEY
+      environmentVariable: GEMINI_API_KEY
