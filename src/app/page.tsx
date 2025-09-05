@@ -22,10 +22,6 @@ export default function Home() {
       const text = await handleFileRead(formData);
       setDocumentText(text);
       setShowStudyInterface(true); // Show study interface on successful upload
-      toast({
-        title: 'File uploaded successfully!',
-        description: 'You can now generate notes, flashcards, or a quiz.',
-      });
     } catch (error) {
       console.error("Failed to process file:", error);
       toast({
