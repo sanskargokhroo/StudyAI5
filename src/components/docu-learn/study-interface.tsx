@@ -128,17 +128,16 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back
                 </Button>
-            ) : (
-              <div className="flex flex-col items-center">
+            ) : null }
+              <div className="flex flex-col">
                   <div className="inline-flex items-center gap-2">
                       <BrainCircuit className="w-6 h-6 text-primary" />
                       <h1 className="text-xl font-bold font-headline tracking-tight text-foreground">
                           StudyAI
                       </h1>
                   </div>
-                  <p className="text-xs text-foreground/80 pl-16">by Akshiii Jain</p>
+                  <p className="text-xs text-foreground/80">by Sanskar Gokhroo</p>
               </div>
-            )}
            </div>
            <div className="flex justify-end gap-2 items-center">
             <ThemeToggle />
