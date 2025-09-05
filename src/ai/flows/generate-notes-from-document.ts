@@ -37,13 +37,20 @@ const prompt = ai.definePrompt({
   name: 'generateNotesFromDocumentPrompt',
   input: {schema: GenerateNotesFromDocumentInputSchema},
   output: {schema: GenerateNotesFromDocumentOutputSchema},
-  prompt: `You are an expert note-taker, skilled at summarizing documents into concise and informative notes.
+  prompt: `You are an expert academic assistant, skilled at creating high-quality, structured notes from a given document.
 
-  Please generate notes from the following document text. Focus on extracting the key information and presenting it in a clear, well-organized manner.
+  Please generate comprehensive notes from the following document text. The notes should be well-organized and easy to study from.
+
+  Structure the notes in the following way:
+  1.  **Identify Key Topics**: First, identify the main topics or chapters in the document.
+  2.  **Extract Main Points**: For each topic, list the most important points, concepts, or arguments.
+  3.  **Provide Explanations**: Briefly explain each main point, providing context and clarity.
+  4.  **Highlight Important Information**: Use markdown formatting (like **bold** for key terms and *italics* for emphasis) to highlight the most critical information that a student must remember.
+  5.  **Use headings and bullet points** to create a clear hierarchy.
 
   Document Text: {{{documentText}}}
 
-  Your notes should be comprehensive yet concise, enabling someone to quickly understand the main points of the document. Please add a progress report field at the end to show a summary of what you have generated.
+  Your final output should be a well-structured set of notes that a student can use to effectively learn the material. Please add a progress report field at the end to show a summary of what you have generated.
   `,}
 );
 
