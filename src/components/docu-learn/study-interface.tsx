@@ -143,7 +143,7 @@ export function StudyInterface({ documentText, onReset }: StudyInterfaceProps) {
             <ThemeToggle />
             <Button variant="outline" onClick={onReset} className="shrink-0">
                 <RotateCcw className="mr-2 h-4 w-4" />
-                Upload New
+                New
             </Button>
            </div>
         </header>
