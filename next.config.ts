@@ -30,6 +30,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Adding serverRuntimeConfig to expose environment variables to the server
+  serverRuntimeConfig: {
+    geminiApiKey: process.env.GEMINI_API_KEY,
+  },
 };
 
 export default nextConfig;
