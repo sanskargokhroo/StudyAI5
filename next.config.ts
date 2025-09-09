@@ -3,6 +3,7 @@ import type {NextConfig} from 'next';
 const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
+    serverComponentsExternalPackages: ["genkit"],
     serverActions: {
       bodySizeLimit: '10mb',
     },
