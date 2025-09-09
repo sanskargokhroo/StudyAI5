@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     serverComponentsExternalPackages: ["genkit"],
     serverActions: {
       bodySizeLimit: '10mb',
+      executionTimeout: 120, // Increase timeout to 2 minutes for AI operations
     },
   },
   typescript: {
@@ -29,10 +30,6 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-  },
-  // Adding serverRuntimeConfig to expose environment variables to the server
-  serverRuntimeConfig: {
-    geminiApiKey: process.env.GEMINI_API_KEY,
   },
 };
 
