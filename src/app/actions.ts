@@ -5,14 +5,7 @@ import { generateNotesFromDocument } from '@/ai/flows/generate-notes-from-docume
 import { generateQuiz } from '@/ai/flows/generate-quiz-from-document';
 import { explainQuizAnswer } from '@/ai/flows/explain-quiz-answer';
 import { Quiz, QuizQuestion } from '@/lib/types';
-import mammoth from 'mammoth';
 import { extractTextFromPdf } from '@/ai/flows/extract-text-from-pdf';
-
-
-async function getTextFromDocx(buffer: Buffer): Promise<string> {
-    const result = await mammoth.extractRawText({ buffer });
-    return result.value;
-}
 
 async function getTextFromPdf(buffer: Buffer): Promise<string> {
     const pdfDataUri = `data:application/pdf;base64,${buffer.toString('base64')}`;
